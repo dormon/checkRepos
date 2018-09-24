@@ -10,6 +10,16 @@ import argparse
 import re
 import shutil
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 parser = argparse.ArgumentParser(description='Performs git status on all git directories.')
 parser.add_argument('--repoDir', type=str, default="..", help='where to download repositories')
 
@@ -26,5 +36,8 @@ def getGitDirectory(url):
 for i in gits:
     gitDir = os.path.join(repoDir,getGitDirectory(i[0]))
     print(gitDir)
-    call(["git","-C",gitDir,"status"])
+    output = Popen(["git","-C",gitDir,"status"],stdout=PIPE,stderr=PIPE).communicate()[0]
+    if output.find("working tree clean") < 0:
+        print(bcolors.FAIL + output + bcolors.ENDC)
+    #call(["git","-C",gitDir,"status"])
 
