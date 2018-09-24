@@ -1,6 +1,10 @@
 #!/usr/bin/python
 
-from myRepositories import *
+import myNonCmakeRepositories
+import myCmakeLibraries
+import myCmakeApps
+
+gits = myNonCmakeRepositories.gits + myCmakeLibraries.gits + myCmakeApps.gits
 
 import sys
 import os
@@ -39,5 +43,4 @@ for i in gits:
     output = Popen(["git","-C",gitDir,"status"],stdout=PIPE,stderr=PIPE).communicate()[0]
     if output.find("working tree clean") < 0:
         print(bcolors.FAIL + output + bcolors.ENDC)
-    #call(["git","-C",gitDir,"status"])
 
