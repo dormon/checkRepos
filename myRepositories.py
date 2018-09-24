@@ -12,4 +12,6 @@ gits = [
 ("git@github.com:dormon/Vars.git"             ,""             ,[]),
 ("git@github.com:dormon/checkRepos.git"       ,""             ,[]),
 ("git@github.com:dormon/prj.git"              ,""             ,[]),
+("git@github.com:dormon/MemoryBandwidth.git"  ,""             ,[]),
+("git@github.com:dormon/Shadows.git"            ,""             ,[]),
         ]
