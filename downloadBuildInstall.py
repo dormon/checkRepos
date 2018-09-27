@@ -33,6 +33,8 @@ curDir       = os.path.abspath(".")
 dontPull     = args.dontPull
 clearBuild   = args.clearBuild
 
+system = sys.platform
+
 def getGCC():
     GCCs = ["g++","g++-5","g++-6","g++-7"]
     standards = ["--std=c++14","--std=c++17"]
@@ -92,7 +94,6 @@ def getGCC():
     return (gcc,standard)
 
 
-system = sys.platform
 
 gcc = ("","")
 if system.find("linux") >= 0:
