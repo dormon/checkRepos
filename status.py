@@ -41,6 +41,8 @@ def getGitDirectory(url):
 for i in gits:
     gitDir = os.path.join(repoDir,getGitDirectory(i[0]))
     print(gitDir)
+    if not os.path.isdir(gitDir):
+        print(bcolors.FAIL + "dir does not exists" + bcolors.ENDC)
     output = str(Popen(["git","-C",gitDir,"status"],stdout=PIPE,stderr=PIPE).communicate()[0])
     if output.find("nothing to commit") < 0 or output.find("Your branch is up to date") < 0:
         print(bcolors.FAIL + str(output) + bcolors.ENDC)
