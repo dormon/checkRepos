@@ -4,8 +4,9 @@
 import myNonCmakeRepositories
 import myCmakeLibraries
 import myCmakeApps
+import externLibraries
 
-gits = myNonCmakeRepositories.gits + myCmakeLibraries.gits + myCmakeApps.gits
+gits = myNonCmakeRepositories.gits + myCmakeLibraries.gits + myCmakeApps.gits + externLibraries.gits
 
 import sys
 import os
@@ -33,7 +34,7 @@ def clone(url,commit = ""):
 
     if not os.path.isdir(gitDir):
         print ("cloning: "+gitDir)
-        call(["git","-C",reporDir,"clone",url])
+        call(["git","-C",repoDir,"clone",url])
     else:
         print ("executing git pull on: "+gitDir)
         call(["git","-C",gitDir,"pull"])
