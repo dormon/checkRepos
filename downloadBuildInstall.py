@@ -35,6 +35,9 @@ clearBuild   = args.clearBuild
 
 system = sys.platform
 
+if not dontPull:
+    import pull
+
 def getGCC():
     GCCs = ["g++","g++-5","g++-6","g++-7"]
     standards = ["--std=c++14","--std=c++17"]
@@ -116,29 +119,6 @@ if not os.path.isdir(repoDir):
 def getGitDirectory(url):
     return url[url.rfind("/")+1:url.rfind(".")]
 
-def clone(url,commit = ""):
-    os.chdir(repoDir)
-    gitDir = getGitDirectory(url)
-    if not os.path.isdir(gitDir):
-        print ("cloning: "+gitDir)
-        call(["git","clone",url])
-    else:
-        print ("executing git pull on: "+gitDir)
-        if not dontPull:
-            os.chdir(gitDir)
-            call(["git","pull"])
-            os.chdir("..")
-
-    if commit != "":
-        os.chdir(gitDir)
-        print ("checkout: "+commit)
-        call(["git","checkout",commit])
-        os.chdir("..")
-
-    os.chdir(curDir)
-
-
-
 debugBuildDir = "build/"+system+"/debug"
 releaseBuildDir = "build/"+system+"/release"
 
@@ -185,9 +165,6 @@ def buildAndInstall(url,args = []):
     if buildRelease:
         call(basicArgs+args+["-H.","-B"+releaseBuildDir,"-DCMAKE_BUILD_TYPE=Release"])
         call(["cmake","--build",releaseBuildDir,"--target","install","--"] + systemSpecificReleaseBuildOptions)
-
-for i in gits:
-    clone(i[0],i[1])
 
 for i in gits:
     buildAndInstall(i[0],i[2])
