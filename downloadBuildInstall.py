@@ -142,10 +142,6 @@ def buildAndInstall(url,args = []):
     if clearBuild:
        shutil.rmtree(debugBuildDir)
        shutil.rmtree(releaseBuildDir)
-       #if os.path.isfile(debugBuildDir+"/CMakeCache.txt"):
-       #    os.remove(debugBuildDir+"/CMakeCache.txt")
-       #if os.path.isfile(releaseBuildDir+"/CMakeCache.txt"):
-       #    os.remove(releaseBuildDir+"/CMakeCache.txt")
     if not os.path.isdir(debugBuildDir):
        os.makedirs(debugBuildDir)
     if not os.path.isdir(releaseBuildDir):
