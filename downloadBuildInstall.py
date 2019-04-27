@@ -20,6 +20,7 @@ parser.add_argument('--threads', type=int, default=4,  help='number of threads f
 parser.add_argument('--dontBuildDebug',action='store_true')
 parser.add_argument('--dontBuildRelease',action='store_true')
 parser.add_argument('--installDir', type=str, default="../../install", help='where to install all repositories')
+parser.add_argument('--separateInstall',action='store_true',help='every library will be installed to separate location')
 parser.add_argument('--repoDir', type=str, default="..", help='where to download repositories')
 parser.add_argument('--dontPull', action='store_true')
 parser.add_argument('--clearBuild', action='store_true')
@@ -47,4 +48,6 @@ if not buildRelease:
     buildScript += " --dontBuildRelease "
 if clearBuild:
     buildScript += " --clearBuild "
+if separateInstall:
+    buildScript += " --separateInstall "
 os.system(buildScript)

@@ -20,18 +20,20 @@ parser.add_argument('--threads', type=int, default=4,  help='number of threads f
 parser.add_argument('--dontBuildDebug',action='store_true')
 parser.add_argument('--dontBuildRelease',action='store_true')
 parser.add_argument('--installDir', type=str, default="../../install", help='where to install all repositories')
+parser.add_argument('--separateInstall',action='store_true',help='every library will be installed to separate location')
 parser.add_argument('--repoDir', type=str, default="..", help='where the libraries were downloaded')
 parser.add_argument('--clearBuild', action='store_true')
 
 args = parser.parse_args()
 
-threads      = args.threads
-buildDebug   = not args.dontBuildDebug
-buildRelease = not args.dontBuildRelease
-installDir   = args.installDir
-repoDir      = args.repoDir
-curDir       = os.path.abspath(".")
-clearBuild   = args.clearBuild
+threads         = args.threads
+buildDebug      = not args.dontBuildDebug
+buildRelease    = not args.dontBuildRelease
+installDir      = args.installDir
+separateInstall = args.separateInstall
+repoDir         = args.repoDir
+curDir          = os.path.abspath(".")
+clearBuild      = args.clearBuild
 
 system = sys.platform
 
@@ -128,6 +130,11 @@ else:
 def buildAndInstall(url,args = []):
     os.chdir(repoDir)
     dirName = getGitDirectory(url)
+
+    instDir = installDir
+    if separateInstall :
+        instDir = os.path.join(installDir,dirName)
+
     os.chdir(dirName)
     if clearBuild:
        shutil.rmtree(debugBuildDir)
@@ -137,7 +144,7 @@ def buildAndInstall(url,args = []):
     if not os.path.isdir(releaseBuildDir):
        os.makedirs(releaseBuildDir)
 
-    basicArgs  = ["cmake","-DCMAKE_INSTALL_PREFIX="+installDir,"-DBUILD_SHARED_LIBS=ON"] 
+    basicArgs  = ["cmake","-DCMAKE_INSTALL_PREFIX="+instDir,"-DBUILD_SHARED_LIBS=ON"] 
 
     if system.find("linux") >= 0:
         basicArgs += ["-DCMAKE_CXX_COMPILER="+gcc[0],"-DCMAKE_CXX_FLAGS="+gcc[1]]
