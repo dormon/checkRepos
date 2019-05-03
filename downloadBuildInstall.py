@@ -35,6 +35,7 @@ repoDir      = args.repoDir
 curDir       = os.path.abspath(".")
 dontPull     = args.dontPull
 clearBuild   = args.clearBuild
+separateInstall = args.separateInstall
 
 system = sys.platform
 
