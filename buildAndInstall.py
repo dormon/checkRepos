@@ -13,6 +13,7 @@ import argparse
 import re
 import shutil
 import inspect
+import functools
 #print(inspect.getframeinfo(inspect.stack()[0][0]).filename,inspect.getframeinfo(inspect.stack()[0][0]).lineno)
 
 parser = argparse.ArgumentParser(description='Compile and install libraries.')
