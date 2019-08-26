@@ -21,6 +21,7 @@ parser.add_argument('--dontBuildDebug',action='store_true')
 parser.add_argument('--dontBuildRelease',action='store_true')
 parser.add_argument('--installDir', type=str, default="../../install", help='where to install all repositories')
 parser.add_argument('--separateInstall',action='store_true',help='every library will be installed to separate location')
+parser.add_argument("--static"         ,action='store_true',help='build static libraries')
 parser.add_argument('--repoDir', type=str, default="..", help='where to download repositories')
 parser.add_argument('--dontPull', action='store_true')
 parser.add_argument('--clearBuild', action='store_true')
@@ -36,6 +37,7 @@ curDir       = os.path.abspath(".")
 dontPull     = args.dontPull
 clearBuild   = args.clearBuild
 separateInstall = args.separateInstall
+static          = args.static
 
 system = sys.platform
 
@@ -51,4 +53,6 @@ if clearBuild:
     buildScript += " --clearBuild "
 if separateInstall:
     buildScript += " --separateInstall "
+if static:
+    buildScript += " --static "
 os.system(buildScript)

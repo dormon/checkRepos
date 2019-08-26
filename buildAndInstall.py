@@ -22,6 +22,7 @@ parser.add_argument('--dontBuildDebug',action='store_true')
 parser.add_argument('--dontBuildRelease',action='store_true')
 parser.add_argument('--installDir', type=str, default="../../install", help='where to install all repositories')
 parser.add_argument('--separateInstall',action='store_true',help='every library will be installed to separate location')
+parser.add_argument("--static"         ,action='store_true',help='build static libraries')
 parser.add_argument('--repoDir', type=str, default="..", help='where the libraries were downloaded')
 parser.add_argument('--clearBuild', action='store_true')
 
@@ -32,6 +33,7 @@ buildDebug      = not args.dontBuildDebug
 buildRelease    = not args.dontBuildRelease
 installDir      = args.installDir
 separateInstall = args.separateInstall
+static          = args.static
 repoDir         = args.repoDir
 curDir          = os.path.abspath(".")
 clearBuild      = args.clearBuild
@@ -145,7 +147,12 @@ def buildAndInstall(url,args = []):
     if not os.path.isdir(releaseBuildDir):
        os.makedirs(releaseBuildDir)
 
-    basicArgs  = ["cmake","-DCMAKE_INSTALL_PREFIX="+instDir,"-DBUILD_SHARED_LIBS=ON"] 
+    basicArgs  = ["cmake","-DCMAKE_INSTALL_PREFIX="+instDir]
+
+    if static:
+        basicArgs += ["-DBUILD_SHARED_LIBS=OFF"] 
+    else:
+        basicArgs += ["-DBUILD_SHARED_LIBS=ON"] 
 
     if system.find("linux") >= 0:
         basicArgs += ["-DCMAKE_CXX_COMPILER="+gcc[0],"-DCMAKE_CXX_FLAGS="+gcc[1]]
