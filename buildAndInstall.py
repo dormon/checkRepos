@@ -17,14 +17,14 @@ import functools
 #print(inspect.getframeinfo(inspect.stack()[0][0]).filename,inspect.getframeinfo(inspect.stack()[0][0]).lineno)
 
 parser = argparse.ArgumentParser(description='Compile and install libraries.')
-parser.add_argument('--threads', type=int, default=4,  help='number of threads for compilation')
-parser.add_argument('--dontBuildDebug',action='store_true')
+parser.add_argument('--threads'         ,type=int, default=4,  help='number of threads for compilation')
+parser.add_argument('--dontBuildDebug'  ,action='store_true')
 parser.add_argument('--dontBuildRelease',action='store_true')
-parser.add_argument('--installDir', type=str, default="../../install", help='where to install all repositories')
-parser.add_argument('--separateInstall',action='store_true',help='every library will be installed to separate location')
-parser.add_argument("--static"         ,action='store_true',help='build static libraries')
-parser.add_argument('--repoDir', type=str, default="..", help='where the libraries were downloaded')
-parser.add_argument('--clearBuild', action='store_true')
+parser.add_argument('--installDir'      ,type=str, default="../../install", help='where to install all repositories')
+parser.add_argument('--separateInstall' ,action='store_true',help='every library will be installed to separate location')
+parser.add_argument("--static"          ,action='store_true',help='build static libraries')
+parser.add_argument('--repoDir'         ,type=str, default="..", help='where the libraries were downloaded')
+parser.add_argument('--clearBuild'      ,action='store_true')
 
 args = parser.parse_args()
 
@@ -49,14 +49,15 @@ def getGCC():
         p.communicate()
         return not p.returncode
     
-    hasGCCs = map(lambda x:hasGCC(x),GCCs)
+    hasGCCs = list(map(lambda x:hasGCC(x),GCCs))
+
     
-    if not reduce(lambda x,y:x or y,hasGCCs):
+    if not functools.reduce(lambda x,y:x or y,hasGCCs):
         print ("there is no g++")
         exit(0)
     
     def getVersion(whatGCC):
-        versionLine = Popen([whatGCC,"--version"],stdout=PIPE,stderr=PIPE).communicate()[0].split("\n")[0];
+        versionLine = Popen([whatGCC,"--version"],stdout=PIPE,stderr=PIPE).communicate()[0].decode("utf-8").split("\n")[0];
         return re.sub(".*\s([0-9](\\.[0-9])+).*","\\1",versionLine)
     
     def isVersionLess(a,b):
@@ -74,26 +75,26 @@ def getGCC():
     
     def getNewestGCC():
         allGCCs = zip(GCCs,hasGCCs)
-        existingGCCs = filter(lambda x:x[1],allGCCs)
-        existingGCCs = map(lambda x:x[0],existingGCCs)
-        versions = map(lambda x:getVersion(x),existingGCCs)
+        existingGCCs = list(filter(lambda x:x[1],allGCCs))
+        existingGCCs = list(map(lambda x:x[0],existingGCCs))
+        versions = list(map(lambda x:getVersion(x),existingGCCs))
         gccWithVersion = zip(existingGCCs,versions)
-        newestGCC = reduce(lambda x,y:x if isVersionLess(x[1],y[1]) else y,gccWithVersion)[0]
+        newestGCC = functools.reduce(lambda x,y:x if isVersionLess(x[1],y[1]) else y,gccWithVersion)[0]
         return newestGCC
     
     gcc = getNewestGCC()
     
     def supportStandard(standard):
-        return not (Popen([gcc,standard],stdout=PIPE,stderr=PIPE).communicate()[0].find("unrecognized") >= 0)
+        return not (Popen([gcc,standard],stdout=PIPE,stderr=PIPE).communicate()[0].decode("utf-8").find("unrecognized") >= 0)
     
-    supportedStandards = map(lambda x:supportStandard(x),standards)
+    supportedStandards = list(map(lambda x:supportStandard(x),standards))
     
-    if not reduce(lambda x,y:x or y,supportedStandards):
+    if not functools.reduce(lambda x,y:x or y,supportedStandards):
         print ("your g++ is too old and does not support required C++ standard: ",standards[0])
         exit(0)
     
     def getNewestStandard():
-        return filter(lambda x:x[1],zip(standards,supportedStandards))[-1][0]
+        return list(filter(lambda x:x[1],zip(standards,supportedStandards)))[-1][0]
     
     standard = getNewestStandard();
     return (gcc,standard)

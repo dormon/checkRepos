@@ -7,13 +7,10 @@ gits = externLibraries.gits + myCmakeLibraries.gits
 
 import sys
 import os
-from subprocess import call
-from subprocess import Popen, PIPE
 import argparse
 import re
 import shutil
 import inspect
-#print(inspect.getframeinfo(inspect.stack()[0][0]).filename,inspect.getframeinfo(inspect.stack()[0][0]).lineno)
 
 parser = argparse.ArgumentParser(description='Download/pull all Shadows dependencies, compile and install them.')
 parser.add_argument('--threads', type=int, default=4,  help='number of threads for compilation')
