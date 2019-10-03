@@ -22,6 +22,7 @@ parser.add_argument("--static"         ,action='store_true',help='build static l
 parser.add_argument('--repoDir', type=str, default="..", help='where to download repositories')
 parser.add_argument('--dontPull', action='store_true')
 parser.add_argument('--clearBuild', action='store_true')
+parser.add_argument("--https"  ,action='store_true',help='use https instead of ssh')
 
 args = parser.parse_args()
 
@@ -35,11 +36,16 @@ dontPull     = args.dontPull
 clearBuild   = args.clearBuild
 separateInstall = args.separateInstall
 static          = args.static
+https           = args.https
 
 system = sys.platform
 
 if not dontPull:
-    os.system("python pull.py") 
+    cmd = "python pull.py"
+    cmd += " --repo "+repoDir
+    if https:
+        cmd += " --https"
+    os.system(cmd) 
 
 buildScript = "python buildAndInstall.py --threads "+str(threads)+" --installDir "+str(installDir)+" --repoDir "+str(repoDir)
 if not buildDebug:

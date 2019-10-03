@@ -18,13 +18,18 @@ import shutil
 
 parser = argparse.ArgumentParser(description='Performs git clone/pull/checkout on all git directories.')
 parser.add_argument('--repoDir', type=str, default="..", help='where to download repositories')
+parser.add_argument("--https"  ,action='store_true',help='use https instead of ssh')
 
 args = parser.parse_args()
 
 repoDir      = args.repoDir
+https        = args.https
 
 if not os.path.isabs(repoDir):
     repoDir = os.path.join(os.path.abspath("."),repoDir)
+
+def convertSSH2HTTPS(url):
+    return "https://" + url.split("@")[1]
 
 def getGitDirectory(url):
     return url[url.rfind("/")+1:url.rfind(".")]
@@ -34,7 +39,10 @@ def clone(url,commit = ""):
 
     if not os.path.isdir(gitDir):
         print ("cloning: "+gitDir)
-        call(["git","-C",repoDir,"clone",url])
+        if https:
+            call(["git","-C",repoDir,"clone",convertSSH2HTTPS(url)])
+        else:
+            call(["git","-C",repoDir,"clone",url])
     else:
         print ("executing git pull on: "+gitDir)
         call(["git","-C",gitDir,"pull"])
