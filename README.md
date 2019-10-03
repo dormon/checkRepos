@@ -1,7 +1,6 @@
 # checkRepos
 Simple python scripts for checking, pulling, compiling and installing multiple git projects
 
-# Building
 These scripts will download several repositories, build them and install them.
 This is how the directories will look in the end:
 ```
@@ -39,25 +38,28 @@ optional arguments:
   --https               use https instead of ssh
 ```
 
+# Building
+
 
 ## Prerequisites
 It requires python 2.7 or 3.7
 
 ## SSH
 If you would like to push / make merge requests in the future
-
+```
 $ mkdir git
 $ cd git
 $ git clone git@github.com:dormon/checkRepos.git
 $ cd checkRepos
 $ python downloadBuildInstall.py
+```
 
 ## HTTPS
 If you are not interested in pushing / making merge requests
-
+```
 $ mkdir git
 $ cd git
 $ git clone https://github.com/dormon/checkRepos.git
 $ cd checkRepos
 $ python downloadBuildInstall.py --https
-
+```
