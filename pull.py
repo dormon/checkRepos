@@ -29,7 +29,7 @@ if not os.path.isabs(repoDir):
     repoDir = os.path.join(os.path.abspath("."),repoDir)
 
 def convertSSH2HTTPS(url):
-    return "https://" + url.split("@")[1]
+    return "https://" + url.split("@")[1].replace(":","/")
 
 def getGitDirectory(url):
     return url[url.rfind("/")+1:url.rfind(".")]
