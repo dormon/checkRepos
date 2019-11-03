@@ -13,4 +13,5 @@ gits = [
 ("git@github.com:dormon/StringAligner.git"    ,""             ,[]),
 ("git@github.com:dormon/Simple3DApp.git"      ,""             ,[]),
 ("git@github.com:dormon/VarsGLMDecorator.git" ,""             ,[]),
+("git@github.com:dormon/imguiVars.git"        ,""             ,[]),
         ]
