@@ -36,6 +36,7 @@ optional arguments:
   --dontPull
   --clearBuild
   --https               use https instead of ssh
+  --MSVC                version of msvc 15 - 2017, 16 - 2019
 ```
 
 # Building
