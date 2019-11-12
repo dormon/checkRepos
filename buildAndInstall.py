@@ -25,6 +25,7 @@ parser.add_argument('--separateInstall' ,action='store_true',help='every library
 parser.add_argument("--static"          ,action='store_true',help='build static libraries')
 parser.add_argument('--repoDir'         ,type=str, default="..", help='where the libraries were downloaded')
 parser.add_argument('--clearBuild'      ,action='store_true')
+parser.add_argument('--msvc'            ,type=int, default=15, help='version of visual studio 15 - 2017, 16 - 2019')
 
 args = parser.parse_args()
 
@@ -37,6 +38,11 @@ static          = args.static
 repoDir         = args.repoDir
 curDir          = os.path.abspath(".")
 clearBuild      = args.clearBuild
+msvc            = args.msvc
+
+if msvc != 15 and msvc != 16:
+    print("please select valid MSVC version - 15, 16")
+    exit()
 
 system = sys.platform
 
@@ -158,7 +164,10 @@ def buildAndInstall(url,args = []):
     if system.find("linux") >= 0:
         basicArgs += ["-DCMAKE_CXX_COMPILER="+gcc[0],"-DCMAKE_CXX_FLAGS="+gcc[1]]
     else:
-        basicArgs += ["-GVisual Studio 15 2017 Win64"]
+        if msvc == 15:
+            basicArgs += ["-GVisual Studio 15 2017 Win64"]
+        if msvc == 16:
+            basicArgs += ["-GVisual Studio 16 2019"]
 
     if buildDebug:
         call(basicArgs+args+["-H.","-B"+debugBuildDir,"-DCMAKE_BUILD_TYPE=Debug"])
