@@ -5,4 +5,5 @@ gits = [
 ("git@github.com:dormon/TessellationLevels.git",""             ,[]),
 ("git@github.com:dormon/Empty3DProject.git"    ,""             ,[]),
 ("git@github.com:dormon/3DApps.git"            ,""             ,[]),
+("git@github.com:dormon/stupidBenchmark.git"   ,""             ,[]),
         ]
